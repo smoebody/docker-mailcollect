@@ -1,0 +1,8 @@
+mailcollect:
+  image: smoebody/mailcollect
+
+  ports:
+    - "127.0.0.1:143"
+  volumes:
+    - home/smoe/Maildir:/home/dev/Maildir
+

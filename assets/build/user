@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+useradd --home-dir /home/dev --shell /bin/bash -p $(perl -e'print crypt("dev", "aa")') dev
+
+chown dev:dev /home/dev -R

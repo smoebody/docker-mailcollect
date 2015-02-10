@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+set -e
+
+cat > /etc/postfix/main.cf <<EOF
+myhostname = dev-mailcollect
+mydestination = \$myhostname.localdomain
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 __DOCKERNET__
+inet_interfaces = all
+default_transport = procmail
+relay_transport = procmail
+home_mailbox = Maildir/
+EOF
+
+# add procmail processing
+cat >> /etc/postfix/master.cf <<EOF
+procmail unix -    n    n    -    20    pipe
+	flags=R user=nobody argv=/usr/bin/procmail -o SENDER=\${sender} -m USER=\${user} EXTENSION=\${extension} /etc/procmailrc
+EOF
+
+# procmail sends all to user dev
+cat > /etc/procmailrc <<EOF
+:0
+    !dev
+EOF
+
+cat > /etc/supervisor/conf.d/postfix.conf <<EOF
+[program:postfix]
+priority = 10
+command = /docker/run/postfix
+user = root
+autostart = true
+autorestart = true
+stopsignal = QUIT
+stdout_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
+stderr_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
+EOF
+
+cat > /etc/supervisor/conf.d/dovecot.conf <<EOF
+[program:dovecot]
+priority = 10
+command = /docker/run/dovecot
+user = root
+autostart = true
+autorestart = true
+stopsignal = QUIT
+stdout_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
+stderr_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
+EOF
+
+# enable plaintext auth
+sed -e "s!^#disable_plaintext_auth\s.*\$!disable_plaintext_auth = no!" -i /etc/dovecot/conf.d/10-auth.conf
+
+# switch to Maildir storage
+sed -e "s!^\(mail_location\s*=\s*\).*\$!\1maildir:~/Maildir!" -i /etc/dovecot/conf.d/10-mail.conf

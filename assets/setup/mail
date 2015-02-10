@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+# add own network to mynetworks
+sed -e "s!__DOCKERNET__!${DOCKERNET}!" -i /etc/postfix/main.cf
