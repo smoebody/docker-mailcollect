@@ -1,4 +1,4 @@
-# docker-dev-mailcollect
+# docker-mailcollect
 
 ## What is this image intended for?
 
