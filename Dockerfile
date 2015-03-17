@@ -1,6 +1,6 @@
 ### install debian ###
 FROM debian:latest
-MAINTAINER useltmann@copatec.de
+MAINTAINER u.seltmann@gmail.com
 EXPOSE 25 143
 VOLUME ["/home/dev/Maildir"]
 ENTRYPOINT ["/docker/init"]

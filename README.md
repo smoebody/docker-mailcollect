@@ -54,6 +54,6 @@ you can now configure your application to use this as smtp
 
 neither is there a login required, nor are other security related mechanism at work. this service is not to be meant secure.
 
-there is at least one image that makes use of this image for development purposes: `useltmann/dev-dotdeb` which is a 
+there is at least one image that makes use of this image for development purposes: `smoebody/dev-dotdeb` which is a 
 development testing environment for php/mysql applications.
 
