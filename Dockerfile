@@ -1,6 +1,6 @@
 ### install debian ###
 FROM debian:latest
-MAINTAINER u.seltmann@gmail.com
+MAINTAINER ulf.seltmann@metaccount.de
 EXPOSE 25 143
 VOLUME ["/home/dev/Maildir"]
 ENTRYPOINT ["/docker/init"]
@@ -19,6 +19,5 @@ RUN chmod 755 /docker/build/init \
  && /docker/build/init
 
 COPY assets/setup /docker/setup
-COPY assets/run /docker/run
 COPY assets/init /docker/init
-RUN chmod 755 /docker/init /docker/run/*
+RUN chmod 755 /docker/init
