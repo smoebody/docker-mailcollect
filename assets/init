@@ -28,23 +28,25 @@ _setupRuntime() {
     done
 }
 
+echo "Setting up owner/group of dev..."
+_adaptUid
+
+echo "Setting up runtime environment..."
+_setupRuntime
+
 case "$1" in
     run)
-        echo "Setting up owner/group of dev..."
-        _adaptUid
-
-        echo "Setting up runtime environment..."
-        _setupRuntime
-
         echo "Starting supervisord..."
         /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
         ;;
     interactive)
+        echo "Starting login shell for user dev..."
         su -l dev
         ;;
     *)
-    echo "unrecognized command: $i";
-    ;;
+        echo "Executing custom command \"$@\" ..."
+        exec su dev -c "cd ${APP_HOME};$@"
+        ;;
 esac
 
 exit 0

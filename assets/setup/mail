@@ -2,5 +2,7 @@
 
 set -e
 
-# add own network to mynetworks
-sed -e "s!__DOCKERNET__!${DOCKERNET}!" -i /etc/postfix/main.cf
+# add own and additionally configured networks to mynetworks
+
+networks=$(echo "${DOCKERNET},${NETWORKS}" | tr "," " ")
+sed -e "s!__NETWORKS__!${networks}!" /etc/postfix/main.cf.template >/etc/postfix/main.cf

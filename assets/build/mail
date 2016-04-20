@@ -2,10 +2,10 @@
 #
 set -e
 
-cat > /etc/postfix/main.cf <<EOF
+cat > /etc/postfix/main.cf.template <<EOF
 myhostname = dev-mailcollect
 mydestination = \$myhostname.localdomain
-mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 192.168.0.0/16 __DOCKERNET__
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 __NETWORKS__
 inet_interfaces = all
 default_transport = procmail
 relay_transport = procmail
@@ -27,11 +27,11 @@ EOF
 cat > /etc/supervisor/conf.d/postfix.conf <<EOF
 [program:postfix]
 priority = 10
-command = /docker/run/postfix
+command = /usr/lib/postfix/master -d
 user = root
 autostart = true
 autorestart = true
-stopsignal = QUIT
+stopasgroup = true
 stdout_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
 stderr_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
 EOF
@@ -39,11 +39,11 @@ EOF
 cat > /etc/supervisor/conf.d/dovecot.conf <<EOF
 [program:dovecot]
 priority = 10
-command = /docker/run/dovecot
+command = /usr/sbin/dovecot -F
 user = root
 autostart = true
 autorestart = true
-stopsignal = QUIT
+stopasgroup = true
 stdout_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
 stderr_logfile = ${LOG_DIR}/supervisor/%(program_name)s.log
 EOF
