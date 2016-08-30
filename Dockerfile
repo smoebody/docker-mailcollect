@@ -1,6 +1,6 @@
 ### install debian ###
 FROM debian:latest
-MAINTAINER ulf.seltmann@metaccount.de
+MAINTAINER seltmann@ub.uni-leipzig.de
 EXPOSE 25 143
 VOLUME ["/home/dev/Maildir"]
 ENTRYPOINT ["/docker/init"]

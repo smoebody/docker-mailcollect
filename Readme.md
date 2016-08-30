@@ -12,7 +12,7 @@ All sent mails appear in one developer inbox as they would appear in a real rece
 
 To run the Container do
 
-    docker run --name mailcollect -d -p 127.0.0.1:143:143 docker.io/smoebody/mailcollect
+    docker run --name mailcollect -d -p 127.0.0.1:143:143 docker.io/useltmann/mailcollect
 
 this starts the container named _mailcollect_ and listens on localhost port 143 for your mail client.
 
@@ -32,7 +32,7 @@ By default the smtp service only takes emails from hosts within private ip addre
 ```
 docker run --name mailcollect -d -p 127.0.0.1:143:143 \
   -e NETWORKS=123.45.6.7/32,8.9.0.0/16 \
-  docker.io/smoebody/mailcollect
+  docker.io/useltmann/mailcollect
 ```
 
 ## Alternative access via Maildir
@@ -63,5 +63,5 @@ you can now configure your application to use this as smtp
 
 neither is there a login required, nor are other security related mechanism at work. this service is not to be meant secure.
 
-there is at least one image that makes use of this image for development purposes: `docker.io/smoebody/dev-dotdeb` which is a
+there is at least one image that makes use of this image for development purposes: `docker.io/useltmann/dev-dotdeb` which is a
 development testing environment for php/mysql applications.
