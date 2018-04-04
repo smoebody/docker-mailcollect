@@ -1,5 +1,5 @@
 ### install debian ###
-FROM debian:latest
+FROM debian:8
 MAINTAINER seltmann@ub.uni-leipzig.de
 EXPOSE 25 143
 VOLUME ["/home/dev/Maildir"]

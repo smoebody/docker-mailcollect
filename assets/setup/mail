@@ -6,3 +6,5 @@ set -e
 
 networks=$(echo "${DOCKERNET},${NETWORKS}" | tr "," " ")
 sed -e "s!__NETWORKS__!${networks}!" /etc/postfix/main.cf.template >/etc/postfix/main.cf
+
+rm -rf /var/run/dovecot/master.pid
