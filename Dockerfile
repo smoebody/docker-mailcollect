@@ -6,18 +6,15 @@ VOLUME ["/home/dev/Maildir"]
 ENTRYPOINT ["/docker/init"]
 CMD ["run"]
 ENV DEBIAN_FRONTEND noninteractive
-# adding dot-deb repository
+
+ADD assets/build /docker/build
+ADD assets/setup /docker/setup
+ADD assets/init /docker/init
+
 RUN apt-get update \
- && apt-get -y dist-upgrade
+ && apt-get install -y supervisor postfix dovecot-imapd procmail \
+ && apt-get autoclean \
+ && apt-get clean \
+ && chmod 755 /docker/build/init /docker/init
 
-RUN apt-get install -y wget less vim supervisor
-
-RUN apt-get install -y postfix dovecot-imapd procmail
-
-COPY assets/build /docker/build
-RUN chmod 755 /docker/build/init \
- && /docker/build/init
-
-COPY assets/setup /docker/setup
-COPY assets/init /docker/init
-RUN chmod 755 /docker/init
+RUN /docker/build/init
