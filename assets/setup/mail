@@ -4,7 +4,8 @@ set -e
 
 # add own and additionally configured networks to mynetworks
 
-networks=$(echo "${DOCKERNET},${NETWORKS}" | tr "," " ")
+networks=$(echo "${DOCKERNET} ${NETWORKS}" | tr "," " ")
+echo "$networks"
 sed -e "s!__NETWORKS__!${networks}!" /etc/postfix/main.cf.template >/etc/postfix/main.cf
 
 rm -rf /var/run/dovecot/master.pid
